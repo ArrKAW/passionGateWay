@@ -1,8 +1,10 @@
 server:
-  port: 8000
+  port: 8100
 
 eureka:
   client:
+    register-with-eureka: true
+    fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka
   instance:
@@ -24,6 +26,35 @@ spring:
         - id: member-service
           uri: http://localhost:8101/
           predicates:
-            - Path=/page/**
+            - Path=/member/**
           filters:
             - CustomFilter
+        - id: bankBook-service
+          uri: http://localhost:8102/
+          predicates:
+            - Path=/bankBook/**
+          filters:
+            - CustomFilter
+        - id: card-service
+          uri: http://localhost:8103/
+          predicates:
+            - Path=/card/**
+          filters:
+            - CustomFilter
+        - id: payment-service
+          uri: http://localhost:8104/
+          predicates:
+            - Path=/payment/**
+          filters:
+            - CustomFilter
+        - id: admin-service
+          uri: lb://ADMIN-SERVICE
+          predicates:
+            - Path=/admin-service/**
+          filters:
+            - name: CustomFilter
+            - name: LoggingFilter
+              args:
+                baseMessage: Hi there.
+                preLogger: false
+                postLogger: false
