@@ -24,25 +24,25 @@ spring:
             postLogger: true
       routes:
         - id: member-service
-          uri: http://localhost:8101/
+          uri: lb://MEMBER-SERVICE
           predicates:
             - Path=/member/**
           filters:
             - CustomFilter
         - id: bankBook-service
-          uri: http://localhost:8102/
+          uri: lb://BANKBOOK-SERVICE
           predicates:
-            - Path=/bankBook/**
+            - Path=/bankbook/**
           filters:
             - CustomFilter
         - id: card-service
-          uri: http://localhost:8103/
+          uri: lb://CARD-SERVICE
           predicates:
             - Path=/card/**
           filters:
             - CustomFilter
         - id: payment-service
-          uri: http://localhost:8104/
+          uri: lb://PAYMENT-SERVICE
           predicates:
             - Path=/payment/**
           filters:
@@ -50,7 +50,7 @@ spring:
         - id: admin-service
           uri: lb://ADMIN-SERVICE
           predicates:
-            - Path=/admin-service/**
+            - Path=/admin/**
           filters:
             - name: CustomFilter
             - name: LoggingFilter
