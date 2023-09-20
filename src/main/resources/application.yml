@@ -29,32 +29,44 @@ spring:
             - Path=/member/**
           filters:
             - CustomFilter
+            - RewritePath=/member/(?<segment>.*), /$\{segment}
         - id: bankBook-service
           uri: lb://BANKBOOK-SERVICE
           predicates:
             - Path=/bankbook/**
           filters:
             - CustomFilter
+            - RewritePath=/bankbook/(?<segment>.*), /$\{segment}
         - id: card-service
           uri: lb://CARD-SERVICE
           predicates:
             - Path=/card/**
           filters:
             - CustomFilter
+            - RewritePath=/card/(?<segment>.*), /$\{segment}
         - id: payment-service
           uri: lb://PAYMENT-SERVICE
           predicates:
             - Path=/payment/**
           filters:
-            - CustomFilter
+            - RewritePath=/payment/(?<segment>.*), /$\{segment}
         - id: admin-service
           uri: lb://ADMIN-SERVICE
           predicates:
             - Path=/admin/**
           filters:
-            - name: CustomFilter
-            - name: LoggingFilter
-              args:
-                baseMessage: Hi there.
-                preLogger: false
-                postLogger: false
+            - RewritePath=/admin/(?<segment>.*), /$\{segment}
+        - id: admin-service
+          uri: lb://ADMIN-SERVICE
+          predicates:
+            - Path=/admin/actuator/**
+            - Method=GET, POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/admin/(?<segment>.*), /$\{segment}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans, httpexchanges
